@@ -8,5 +8,5 @@ const shopSchema = new Schema({
     location: { type: String, required: true },
 });
 
-autoIdSetter(shopSchema, mongoose, "application", "id");
+autoIdSetter(shopSchema, mongoose, "application", "shop_id");
 module.exports = mongoose.model("shopList", shopSchema);
