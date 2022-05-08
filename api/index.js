@@ -12,6 +12,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(require("./review-api"));
+app.use(require("./shop-api"));
 
 mongoose
     .connect(process.env.production, {
