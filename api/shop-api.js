@@ -21,7 +21,7 @@ router.post("/shops", async (req, res, next) => {
 
         const checkShop = await Shop.findOne({ shopName: req.body.shopName });
         if (checkShop) {
-            throw new DuplicateError();
+            throw new DuplicateError("Shop");
         }
 
         const shop = new Shop();
@@ -43,7 +43,7 @@ router.get("/shops/:id", async (req, res, next) => {
         }
         const targetShop = await Shop.findOne({ shop_id: req.params.id });
         if (!targetShop) {
-            throw new NotFoundError();
+            throw new NotFoundError("Shop");
         }
         res.status(200).send(targetShop);
     } catch (err) {
@@ -68,7 +68,7 @@ router.put("/shops/:id", async (req, res, next) => {
 
         const targetShop = await Shop.findOne({ shop_id: req.params.id });
         if (!targetShop) {
-            throw new NotFoundError();
+            throw new NotFoundError("Shop");
         }
         targetShop.shopName = req.body.shopName;
         targetShop.shopType = req.body.shopType;
@@ -88,13 +88,13 @@ router.delete("/shops/:id", async (req, res, next) => {
         }
         const targetShop = await Shop.findOne({ shop_id: req.params.id });
         if (!targetShop) {
-            throw new NotFoundError();
+            throw new NotFoundError("Shop");
         }
         const deleteShop = await Shop.deleteOne({ shop_id: req.params.id });
         if (deleteShop.deletedCount === 1) {
             return res.status(200).send({ shop_id: targetShop.shop_id, shopName: targetShop.shopName, shopType: targetShop.shopType, location: targetShop.location });
         } else {
-            return new NotFoundError();
+            return new NotFoundError("Shop");
         }
     } catch (err) {
         return next(err);

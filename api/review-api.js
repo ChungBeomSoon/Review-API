@@ -26,7 +26,7 @@ router.post("/reviews", async (req, res, next) => {
         const checkReview = await Review.findOne({ shopName: req.body.shopName });
 
         if (checkReview) {
-            throw new DuplicateError();
+            throw new DuplicateError("Review");
         }
         const review = new Review();
         review.shopName = req.body.shopName;
@@ -48,7 +48,7 @@ router.get("/reviews/:id", async (req, res, next) => {
         }
         const targetReview = await Review.findOne({ id: req.params.id });
         if (!targetReview) {
-            throw new NotFoundError();
+            throw new NotFoundError("Review");
         }
         res.status(200).send(targetReview);
     } catch (err) {
@@ -75,7 +75,7 @@ router.put("/reviews/:id", async (req, res, next) => {
 
         const targetReview = await Review.findOne({ id: req.params.id });
         if (!targetReview) {
-            throw new NotFoundError();
+            throw new NotFoundError("Review");
         }
         targetReview.shopName = req.body.shopName;
         targetReview.author = req.body.author;
@@ -97,13 +97,13 @@ router.delete("/reviews/:id", async (req, res, next) => {
         }
         const targetReview = await Review.findOne({ id: req.params.id });
         if (!targetReview) {
-            throw new NotFoundError();
+            throw new NotFoundError("Review");
         }
         const deleteReview = await Review.deleteOne({ id: req.params.id });
         if (deleteReview.deletedCount === 1) {
             res.status(200).send({ id: targetReview.id, shopName: targetReview.shopName, author: targetReview.author });
         } else {
-            throw new NotFoundError();
+            throw new NotFoundError("Review");
         }
     } catch (err) {
         return next(err);
